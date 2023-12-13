@@ -4,7 +4,7 @@ const arquivo = require("fs");
 
 const url = "https://www.mercadolivre.com.br";
 const search = "controle ps4";
-let count = 1;
+let count = 0;
 
 (async () => {
     const browser = await puppeteer.launch({headless: false});
@@ -22,19 +22,20 @@ let count = 1;
 
     const links = await page.$$eval(".ui-search-link__title-card", (element) => element.map((link) => link.href));
 
-    console.log(links);
-
-    for(let link in links){
+    for(let link of links){
         if(count === 9){
             continue;
         }
 
         await page.goto(link);
 
-        const name = await page.$eval(".ui-pdp-title", (element) => element.innerText);
-        console.log(name);
+        const priceSelector = ".ui-pdp-price__second-line > span > .andes-money-amount > .andes-visually-hidden";
 
-        count ++
+        const name = await page.$eval(".ui-pdp-title", (element) => element.innerText);
+        const price = await page.$eval(priceSelector, (element) => element.innerText);
+        console.log(name, price);
+
+        count++
     }
 
     await page.waitForTimeout(2000);
