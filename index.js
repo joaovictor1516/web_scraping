@@ -21,8 +21,12 @@ async function enviaEmail(){
         const info = await transporter.sendMail({
             from: `"Jao 👨🏽‍💻" <${emailAddress}>`,
             to: "jvdecampos@hotmail.com",
-            subject: "teste",
-            text: "É só um teste"
+            subject: "Arquivo com os produtos",
+            attachments: [{
+                filename: 'produtos.txt',
+                path: './produtos.txt'
+            }],
+            text: "Arquivo com o resultado da busca"
         });
         console.log("Email enviado", info);
     } catch(error){
@@ -35,10 +39,9 @@ async function enviaEmail(){
     const search = "controle ps4";
     let count = 0;
 
-    file.writeFile("/produtos.txt", `Os ${search} no ${url}`, (error) => {
+    file.writeFile("./produtos.txt", `Os ${search} no ${url}\n`, (error) => {
         return error;
     });
-    const editFile = file.createWriteStream("/produtos.txt", {encoding: "utf8"});
     
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
@@ -54,6 +57,7 @@ async function enviaEmail(){
     ]);
 
     const links = await page.$$eval(".ui-search-link__title-card", (element) => element.map((link) => link.href));
+    const editFile = file.createWriteStream("./produtos.txt", {encoding: "utf8"});
 
     for(let link of links){
         if(count === 9){
@@ -66,9 +70,8 @@ async function enviaEmail(){
 
         const name = await page.$eval(".ui-pdp-title", (element) => element.innerText);
         const price = await page.$eval(priceSelector, (element) => element.innerText);
-        console.log(name, price);
         
-        editFile.write(`${name} custa ${price}`, "utf8", (error) => {
+        editFile.write(`${name} custa ${price}\n`, "utf8", (error) => {
             return error;
         })
 
