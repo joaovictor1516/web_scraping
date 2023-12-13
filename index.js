@@ -2,7 +2,7 @@ const puppeteer = require("puppeteer");
 const nodemailer = require("nodemailer");
 const arquivo = require("fs");
 
-const link = "https://www.mercadolivre.com.br";
+const url = "https://www.mercadolivre.com.br";
 const search = "controle ps4";
 let count = 1;
 
@@ -10,7 +10,7 @@ let count = 1;
     const browser = await puppeteer.launch({headless: false});
     const page = await browser.newPage();
     
-    await page.goto(link);
+    await page.goto(url);
     
     await page.waitForSelector(".nav-search-input");
     await page.type(".nav-search-input", search);
@@ -20,7 +20,9 @@ let count = 1;
         page.click(".nav-search-btn")
     ]);
 
-    const links = await page.$$eval(".ui-search-link__title-card", (link) => link.map((element) => element.href));
+    const links = await page.$$eval(".ui-search-link__title-card", (element) => element.map((link) => link.href));
+
+    console.log(links);
 
     for(let link in links){
         if(count === 9){
