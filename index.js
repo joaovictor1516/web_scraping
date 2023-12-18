@@ -37,7 +37,6 @@ async function enviaEmail(){
 (async () => {
     const url = "https://www.mercadolivre.com.br";
     const search = "controle ps4";
-    let count = 0;
 
     file.writeFile("./produtos.txt", "Novo arquivo", (error) => {
         return error;
@@ -74,8 +73,6 @@ async function enviaEmail(){
         editFile.write(`${name} custa ${price};\n`, "utf8", (error) => {
             return error;
         })
-
-        count++
     }
 
     await browser.close();
