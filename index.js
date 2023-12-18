@@ -39,11 +39,11 @@ async function enviaEmail(){
     const search = "controle ps4";
     let count = 0;
 
-    file.writeFile("./produtos.txt", `Os ${search} no ${url}\n`, (error) => {
+    file.writeFile("./produtos.txt", "Novo arquivo", (error) => {
         return error;
     });
     
-    const browser = await puppeteer.launch({headless: false});
+    const browser = await puppeteer.launch({headless: "new"});
     const page = await browser.newPage();
     
     await page.goto(url);
@@ -59,6 +59,10 @@ async function enviaEmail(){
     const links = await page.$$eval(".ui-search-link__title-card", (element) => element.map((link) => link.href));
     const editFile = file.createWriteStream("./produtos.txt", {encoding: "utf8"});
 
+    editFile.write(`Resultado da busca por ${search} no ${url}:\n`, (error) => {
+        return error;
+    })
+
     for(let link of links){
         if(count === 9){
             continue;
@@ -71,14 +75,13 @@ async function enviaEmail(){
         const name = await page.$eval(".ui-pdp-title", (element) => element.innerText);
         const price = await page.$eval(priceSelector, (element) => element.innerText);
         
-        editFile.write(`${name} custa ${price}\n`, "utf8", (error) => {
+        editFile.write(`${name} custa ${price};\n`, "utf8", (error) => {
             return error;
         })
 
         count++
     }
 
-    await page.waitForTimeout(2000);
     await browser.close();
     await enviaEmail();
     editFile.end();
