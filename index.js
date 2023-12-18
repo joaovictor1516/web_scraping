@@ -64,10 +64,6 @@ async function enviaEmail(){
     })
 
     for(let link of links){
-        if(count === 9){
-            continue;
-        }
-
         await page.goto(link);
 
         const priceSelector = ".ui-pdp-price__second-line > span > .andes-money-amount > .andes-visually-hidden";
