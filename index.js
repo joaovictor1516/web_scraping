@@ -48,7 +48,7 @@ async function enviaEmail(){
     await page.goto(url);
     
     await page.waitForSelector(".nav-search-input");
-    await page.type(".nav-search-input", search);
+    await page.type(".nav-search-input", search, {delay: 100});
 
     await Promise.all([
         page.waitForNavigation(),
