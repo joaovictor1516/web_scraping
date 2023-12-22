@@ -48,7 +48,7 @@ async function enviaEmail(){
     await page.goto(url);
     
     await page.waitForSelector(".nav-search-input");
-    await page.type(".nav-search-input", search, {delay: 100});
+    await page.type(".nav-search-input", search);
 
     await Promise.all([
         page.waitForNavigation(),
@@ -65,10 +65,8 @@ async function enviaEmail(){
     for(let link of links){
         await page.goto(link);
 
-        const priceSelector = ".ui-pdp-price__second-line > span > .andes-money-amount > .andes-visually-hidden";
-
         const name = await page.$eval(".ui-pdp-title", (element) => element.innerText);
-        const price = await page.$eval(priceSelector, (element) => element.innerText);
+        const price = await page.$eval("[itemprop='price']", (element) => element.content);
         
         editFile.write(`${name} custa ${price};\n`, "utf8", (error) => {
             return error;
