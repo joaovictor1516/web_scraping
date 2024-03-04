@@ -12,7 +12,7 @@ Este é um projeto de estudo de como usar o Scraping, manipulação de arquivo e
 
 ## Forma de baixar as bibliotecas e executar
 
-Faça o fork deste projeto usando o comando, enseguida instale as bibliotecas, usando o comando:
+Faça o fork deste projeto usando o comando, em seguida instale as bibliotecas, usando o comando:
 
 ```
 npm install
